@@ -12,13 +12,16 @@
 
 (defn generate-bitonic
   [n l r]
-  (if (> n (+ (* 2 (- r l)) 1))
+  (if (> n (+ (* (- r l) 2) 1))
     [-1]
-    (let [k (max 0 (inc (- n 1 (- r l))))
-          increasing-part (range (- r k) r)
-          peak            [r]
-          decreasing-part (range (dec r) (- r (- n k)) -1)]
-      (vec (concat increasing-part peak decreasing-part)))))
+    (let [dq (atom [(dec r)])]
+      (doseq [i (range r (dec l) -1)
+              :while (< (count @dq) n)]
+        (swap! dq conj i))
+      (doseq [i (range (- r 2) (dec l) -1)
+              :while (< (count @dq) n)]
+        (swap! dq #(vec (concat [i] %))))
+      @dq)))
 
 (defn- respond
   [status body]
