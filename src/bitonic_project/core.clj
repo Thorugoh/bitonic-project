@@ -14,14 +14,20 @@
   [n l r]
   (if (> n (+ (* (- r l) 2) 1))
     [-1]
-    (let [dq (atom [(dec r)])]
-      (doseq [i (range r (dec l) -1)
-              :while (< (count @dq) n)]
-        (swap! dq conj i))
-      (doseq [i (range (- r 2) (dec l) -1)
-              :while (< (count @dq) n)]
-        (swap! dq #(vec (concat [i] %))))
-      @dq)))
+    (let [initial-dq [(dec r)]
+          after-decreasing (reduce (fn [dq i] 
+                                     (if (< (count dq) n) 
+                                       (conj dq i) 
+                                       (reduced dq)))
+                                   initial-dq 
+                                   (range r (dec l) -1))
+          final-dq (reduce (fn [dq i] 
+                             (if (< (count dq) n) 
+                               (into [i] dq) 
+                               (reduced dq)))
+                           after-decreasing 
+                           (range (- r 2) (dec l) -1))]
+      final-dq)))
 
 (defn- respond
   [status body]
