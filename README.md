@@ -22,6 +22,15 @@ A simple Clojure API that generates a Bitonic Sequence of length N from a given 
     lein test
     ```
 
+3. Install JMeter using brew
+ ```sh
+    brew install jmeter
+  ```
+4. Run JMeter tests
+   ```sh
+   ./run-jmeter.sh
+   ```
+   Open `jmeter/report/index.html` in a browser to view the report.
 ## Architecture & Libraries
 
 ### Core Dependencies
