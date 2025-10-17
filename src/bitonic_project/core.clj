@@ -57,16 +57,39 @@
         ; some-> ensures we only attempt parsing if the parameter exists
         n (some-> (get params "n") parse-long-safe)
         l (some-> (get params "l") parse-long-safe)
-        r (some-> (get params "r") parse-long-safe)]
+        r (some-> (get params "r") parse-long-safe)
+        ; Check if benchmarking is requested
+        bench (= "true" (get params "bench"))
+        
+        ; Start timing if benchmarking is enabled
+        start-time (when bench (System/nanoTime))]
 
     ; Validate that all parameters exist and n > 2
     (if (and n l r (> n 2))
-      (let [result (generate-bitonic n l r)
-            redis-key (str "bitonic:" n ":" l ":" r)] ; Create cache key
-        ; Store result in Redis with 1-hour expiration
-        (wcar* (car/set redis-key (json/generate-string result) "EX" 3600))
-        ; Return success response with the result
-        (respond 200 {:n n :l l :r r :result result}))
+      (let [redis-key (str "bitonic:" n ":" l ":" r) ; Create cache key
+            ; Check if result exists in Redis cache
+            cached-result (wcar* (car/get redis-key))
+            
+            ; Process result and measure time
+            [result cached] (if cached-result
+                              ; Return cached result if it exists
+                              [(json/parse-string cached-result) true]
+                              ; Calculate new result if not cached
+                              (let [calc-result (generate-bitonic n l r)]
+                                ; Store result in Redis with 1-hour expiration
+                                (wcar* (car/set redis-key (json/generate-string calc-result) "EX" 3600))
+                                [calc-result false]))
+            
+            ; Calculate processing time if benchmarking
+            processing-time-ms (when bench 
+                                 (/ (- (System/nanoTime) start-time) 1000000.0))
+            
+            ; Build response with optional benchmark data
+            response-data (cond-> {:n n :l l :r r :result result}
+                            bench (assoc :benchmark {:cached cached 
+                                                    :processing-time-ms processing-time-ms}))]
+        
+        (respond 200 response-data))
       ; If invalid, return error response
       (respond 400 {:error "Invalid or missing parameters. Please provide integers for 'n', 'l', and 'r', with n > 2."}))))
 
