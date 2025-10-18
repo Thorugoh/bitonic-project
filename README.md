@@ -31,6 +31,18 @@ A simple Clojure API that generates a Bitonic Sequence of length N from a given 
    ./run-jmeter.sh
    ```
    Open `jmeter/report/index.html` in a browser to view the report.
+
+5. **Install Gatling (Alternative Load Testing Tool):**
+   - **Windows:** Download from https://gatling.io/open-source/ or use Chocolatey: `choco install gatling`
+   - **macOS:** `brew install gatling`
+   - **Linux:** Download and extract from https://gatling.io/open-source/
+
+6. Run Gatling tests
+   ```sh
+   cd gatling
+   ./run.sh
+   ```
+
 ## Architecture & Libraries
 
 ### Core Dependencies
