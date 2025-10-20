@@ -150,6 +150,17 @@ curl "http://localhost:3000/bitonic?n=2&l=1&r=4"
 ```json
 {"error":"Invalid or missing parameters. Please provide integers for 'n', 'l', and 'r', with n > 2."}
 ```
+## How to check Redis Data
+### Access the container's shell
+```
+docker exec -it bitonic-project-redis-1 sh
+
+#Use redis-cli inside the container
+redis-cli
+
+List all keys
+KEYS *
+```
 
 ## Algorithm Details
 
