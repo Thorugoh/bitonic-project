@@ -4,10 +4,8 @@ import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 
-import java.util.random.RandomGenerator;
 import java.time.Duration;
 
-import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
 import static io.gatling.javaapi.core.CoreDsl.rampUsers;
 import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
@@ -24,10 +22,9 @@ public class BitonicSimulation extends Simulation {
                 .shareConnections()
                 .maxConnectionsPerHost(5000);
 
-        RandomGenerator random = RandomGenerator.getDefault();
-        int n = random.nextInt(1, 11);
-        int l = random.nextInt(1, 11);
-        int r = random.nextInt(1, 11);
+        int n = 5;
+        int l = 1;
+        int r = 4;
 
         String path = String.format("/bitonic?n=%d&l=%d&r=%d", n, l, r);
         System.out.println(path);
