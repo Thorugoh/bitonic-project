@@ -1,0 +1,21 @@
+meta {
+  name: Generate Sequence
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:3000/bitonic?n=7&l=2&r=5
+  body: none
+  auth: inherit
+}
+
+params:query {
+  n: 7
+  l: 2
+  r: 5
+}
+
+settings {
+  encodeUrl: true
+}

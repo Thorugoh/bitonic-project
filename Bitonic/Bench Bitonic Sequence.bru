@@ -1,0 +1,22 @@
+meta {
+  name: Bench Bitonic Sequence
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/bitonic?n=3&l=8&r=10&bench=true
+  body: none
+  auth: inherit
+}
+
+params:query {
+  n: 3
+  l: 8
+  r: 10
+  bench: true
+}
+
+settings {
+  encodeUrl: true
+}

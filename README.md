@@ -34,7 +34,6 @@ A simple Clojure API that generates a Bitonic Sequence of length N from a given 
 
 5. **Install Gatling (Alternative Load Testing Tool):**
    - **Windows:** Download from https://gatling.io/open-source/ or use Chocolatey: `choco install gatling`
-   - **macOS:** `brew install gatling`
    - **Linux:** Download and extract from https://gatling.io/open-source/
 
 6. Run Gatling tests
@@ -42,6 +41,35 @@ A simple Clojure API that generates a Bitonic Sequence of length N from a given 
    cd gatling
    ./run.sh
    ```
+
+## Benchmark Results
+### System Specs
+#### Host:
+- CPUs: 12 cores
+- Total Memory: 8.476 GiB
+- Architecture: ARM64 (aarch64 - Apple Silicon)
+- OS: Docker Desktop on macOS
+
+#### Bitonic Project Containers:
+
+#### App Container (bitonic-project-app-1):
+
+- CPU: 0.34%
+- Memory: 313.6 MiB / 8.476 GiB (3.61%)
+- No resource limits set (using default)
+
+#### Redis Container (bitonic-project-redis-1):
+
+- CPU: 0.57%
+- Memory: 20.27 MiB / 8.476 GiB (0.23%)
+- No resource limits set (using default)
+
+#### Gatling Results
+![alt text](image.png)
+
+#### Jmeter Results
+![alt text](image-1.png)
+
 
 ## Architecture & Libraries
 
@@ -68,7 +96,6 @@ This project uses the following Clojure libraries:
 ```
 http://localhost:3000
 ```
-
 ### Endpoints
 
 #### GET /bitonic
@@ -94,7 +121,7 @@ Generates a bitonic sequence of specified length using integers from given range
 **Error Response (400 Bad Request):**
 ```json
 {
-  "error": "Error description"
+  "error": string // error message
 }
 ```
 
