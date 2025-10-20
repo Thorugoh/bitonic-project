@@ -1,6 +1,5 @@
 .idea/
 
-/target
 /classes
 /checkouts
 profiles.clj
